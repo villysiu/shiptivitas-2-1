@@ -1,0 +1,8 @@
+EADDRINUSE, port Address already in use
+
+First, you would want to know which process is using port 3000
+
+sudo lsof -i :3001
+this will list all PID listening on this port, once you have the PID you can terminate it with the following:
+
+kill -9 <PID>

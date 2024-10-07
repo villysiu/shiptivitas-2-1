@@ -1,0 +1,122 @@
+To create a Node.js API with Express, Better SQLite3, and Babel, follow these steps:
+1. Project Setup
+Create a project directory.
+Code
+
+   mkdir node-express-sqlite-api
+   cd node-express-sqlite-api
+Initialize a Node.js project.
+Code
+
+   npm init -y
+Install dependencies.
+Code
+
+   npm install express better-sqlite3 @babel/core @babel/node @babel/preset-env 
+2. Create the Database
+Create a file named db.js in the project directory: 
+Code
+
+   touch db.js
+Inside db.js, set up the database connection:
+JavaScript
+
+import Database from 'better-sqlite3';
+
+const db = new Database('mydb.sqlite');
+
+// Create a table if it doesn't exist
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT
+  )
+`);
+
+export default db;
+3. Create the Express Server
+Create a file named server.js in the project directory: 
+Code
+
+   touch server.js
+Inside server.js, set up the Express server and API routes:
+JavaScript
+
+import express from 'express';
+import db from './db.js';
+
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+// Get all users
+app.get('/users', (req, res) => {
+  const users = db.prepare('SELECT * FROM users').all();
+  res.json(users);
+});
+
+// Get a specific user
+app.get('/users/:id', (req, res) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ error: 'User not found' });
+  }
+});
+
+// Create a new user
+app.post('/users', (req, res) => {
+  const { name, email } = req.body;
+  const insert = db.prepare('INSERT INTO users (name, email) VALUES (?, ?)');
+  const result = insert.run(name, email);
+  res.json({ id: result.lastInsertRowid });
+});
+
+// Update a user
+app.put('/users/:id', (req, res) => {
+  const { name, email } = req.body;
+  const update = db.prepare('UPDATE users SET name = ?, email = ? WHERE id = ?');
+  const result = update.run(name, email, req.params.id);
+  res.json({ affectedRows: result.changes });
+});
+
+// Delete a user
+app.delete('/users/:id', (req, res) => {
+  const deleteStmt = db.prepare('DELETE FROM users WHERE id = ?');
+  const result = deleteStmt.run(req.params.id);
+  res.json({ affectedRows: result.changes });
+});
+
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
+4. Configure Babel
+Create a Babel configuration file named .babelrc in the project directory: 
+Code
+
+   touch .babelrc
+Add the following content to .babelrc.
+Code
+
+{
+  "presets": ["@babel/preset-env"]
+}
+5. Start the Server
+Add the following script to your package.json file:
+Code
+
+"scripts": {
+  "start": "nodemon --exec babel-node server.js"
+},
+Install nodemon.
+Code
+
+   npm install -D nodemon
+Start the server.
+Code
+
+   npm start
+Your API is now up and running. You can test the endpoints using tools like Postman or curl.

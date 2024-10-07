@@ -1,0 +1,11 @@
+setting up node API express without babel
+Steps:
+-Initialize Project:
+    - Create a directory for your project.
+    - Run npm init -y to initialize a new Node.js project.
+- Install Dependencies:
+    - Run npm install express better-sqlite3 to install Express and Better SQLite3.
+- Create server.js:
+    - Create a file named server.js and add the code provided above.
+- Run the Server:
+    - Run node server.js to start the server.

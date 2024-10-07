@@ -1,0 +1,275 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red157\green0\blue210;\red255\green255\blue255;\red0\green0\blue0;
+\red0\green0\blue109;\red144\green1\blue18;\red0\green0\blue255;\red11\green90\blue180;\red101\green76\blue29;
+\red19\green118\blue70;\red15\green112\blue1;\red32\green108\blue135;}
+{\*\expandedcolortbl;;\cssrgb\c68627\c0\c85882;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
+\cssrgb\c0\c6275\c50196;\cssrgb\c63922\c8235\c8235;\cssrgb\c0\c0\c100000;\cssrgb\c0\c43922\c75686;\cssrgb\c47451\c36863\c14902;
+\cssrgb\c3529\c52549\c34510;\cssrgb\c0\c50196\c0;\cssrgb\c14902\c49804\c60000;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 import\cf0 \strokec4  \cf5 \strokec5 express\cf0 \strokec4  \cf2 \strokec2 from\cf0 \strokec4  \cf6 \strokec6 'express'\cf0 \strokec4 ;\cb1 \
+\cf2 \cb3 \strokec2 import\cf0 \strokec4  \cf5 \strokec5 Database\cf0 \strokec4  \cf2 \strokec2 from\cf0 \strokec4  \cf6 \strokec6 'better-sqlite3'\cf0 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 app\cf0 \strokec4  = \cf9 \strokec9 express\cf0 \strokec4 ();\cb1 \
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 port\cf0 \strokec4  = \cf10 \strokec10 3001\cf0 \strokec4 ;\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 use\cf0 \strokec4 (\cf5 \strokec5 express\cf0 \strokec4 .\cf9 \strokec9 json\cf0 \strokec4 ());\cb1 \
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 get\cf0 \strokec4 (\cf6 \strokec6 '/'\cf0 \strokec4 , (\cf5 \strokec5 req\cf0 \strokec4 , \cf5 \strokec5 res\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\{\cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'SHIPTIVITY API. Read documentation to see API docs'\cf0 \strokec4 \});\cb1 \
+\cb3 \});\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 // We are keeping one connection alive for the rest of the life application for simplicity\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 db\cf0 \strokec4  = \cf7 \strokec7 new\cf0 \strokec4  \cf9 \strokec9 Database\cf0 \strokec4 (\cf6 \strokec6 './clients.db'\cf0 \strokec4 );\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 // Don't forget to close connection when server gets terminated\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf9 \strokec9 closeDb\cf0 \strokec4  = () \cf7 \strokec7 =>\cf0 \strokec4  \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 close\cf0 \strokec4 ();\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 process\cf0 \strokec4 .\cf9 \strokec9 on\cf0 \strokec4 (\cf6 \strokec6 'SIGTERM'\cf0 \strokec4 , \cf5 \strokec5 closeDb\cf0 \strokec4 );\cb1 \
+\cf5 \cb3 \strokec5 process\cf0 \strokec4 .\cf9 \strokec9 on\cf0 \strokec4 (\cf6 \strokec6 'SIGINT'\cf0 \strokec4 , \cf5 \strokec5 closeDb\cf0 \strokec4 );\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 /**\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Validate id input\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * \cf7 \strokec7 @param\cf11 \strokec11  \cf12 \strokec12 \{any\}\cf11 \strokec11  \cf5 \strokec5 id\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  */\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf9 \strokec9 validateId\cf0 \strokec4  = (\cf5 \strokec5 id\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf2 \strokec2 if\cf0 \strokec4  (\cf5 \strokec5 Number\cf0 \strokec4 .\cf9 \strokec9 isNaN\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 )) \{\cb1 \
+\cb3     \cf2 \strokec2 return\cf0 \strokec4  \{\cb1 \
+\cb3       \cf5 \strokec5 valid:\cf0 \strokec4  \cf7 \strokec7 false\cf0 \strokec4 ,\cb1 \
+\cb3       \cf5 \strokec5 messageObj:\cf0 \strokec4  \{\cb1 \
+\cb3       \cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Invalid id provided.'\cf0 \strokec4 ,\cb1 \
+\cb3       \cf6 \strokec6 'long_message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Id can only be integer.'\cf0 \strokec4 ,\cb1 \
+\cb3       \},\cb1 \
+\cb3     \};\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 client\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients where id = ? limit 1'\cf0 \strokec4 ).\cf9 \strokec9 get\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4  (!\cf5 \strokec5 client\cf0 \strokec4 ) \{\cb1 \
+\cb3     \cf2 \strokec2 return\cf0 \strokec4  \{\cb1 \
+\cb3       \cf5 \strokec5 valid:\cf0 \strokec4  \cf7 \strokec7 false\cf0 \strokec4 ,\cb1 \
+\cb3       \cf5 \strokec5 messageObj:\cf0 \strokec4  \{\cb1 \
+\cb3       \cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Invalid id provided.'\cf0 \strokec4 ,\cb1 \
+\cb3       \cf6 \strokec6 'long_message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Cannot find client with that id.'\cf0 \strokec4 ,\cb1 \
+\cb3       \},\cb1 \
+\cb3     \};\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf2 \strokec2 return\cf0 \strokec4  \{\cb1 \
+\cb3     \cf5 \strokec5 valid:\cf0 \strokec4  \cf7 \strokec7 true\cf0 \strokec4 ,\cb1 \
+\cb3   \};\cb1 \
+\cb3 \}\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 /**\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Validate priority input\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * \cf7 \strokec7 @param\cf11 \strokec11  \cf12 \strokec12 \{any\}\cf11 \strokec11  \cf5 \strokec5 priority\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  */\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 const\cf0 \strokec4  \cf9 \strokec9 validatePriority\cf0 \strokec4  = (\cf5 \strokec5 priority\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf2 \strokec2 if\cf0 \strokec4  (\cf5 \strokec5 Number\cf0 \strokec4 .\cf9 \strokec9 isNaN\cf0 \strokec4 (\cf5 \strokec5 priority\cf0 \strokec4 )) \{\cb1 \
+\cb3     \cf2 \strokec2 return\cf0 \strokec4  \{\cb1 \
+\cb3       \cf5 \strokec5 valid:\cf0 \strokec4  \cf7 \strokec7 false\cf0 \strokec4 ,\cb1 \
+\cb3       \cf5 \strokec5 messageObj:\cf0 \strokec4  \{\cb1 \
+\cb3       \cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Invalid priority provided.'\cf0 \strokec4 ,\cb1 \
+\cb3       \cf6 \strokec6 'long_message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Priority can only be positive integer.'\cf0 \strokec4 ,\cb1 \
+\cb3       \},\cb1 \
+\cb3     \};\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf2 \strokec2 return\cf0 \strokec4  \{\cb1 \
+\cb3     \cf5 \strokec5 valid:\cf0 \strokec4  \cf7 \strokec7 true\cf0 \strokec4 ,\cb1 \
+\cb3   \}\cb1 \
+\cb3 \}\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 /**\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Get all of the clients. Optional filter 'status'\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * GET /api/v1/clients?status=\{status\} - list all clients, optional parameter status: 'backlog' | 'in-progress' | 'complete'\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  */\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 get\cf0 \strokec4 (\cf6 \strokec6 '/api/v1/clients'\cf0 \strokec4 , (\cf5 \strokec5 req\cf0 \strokec4 , \cf5 \strokec5 res\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 status\cf0 \strokec4  = \cf5 \strokec5 req\cf0 \strokec4 .\cf5 \strokec5 query\cf0 \strokec4 .\cf5 \strokec5 status\cf0 \strokec4 ;\cb1 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4  (\cf5 \strokec5 status\cf0 \strokec4 ) \{\cb1 \
+\cb3     \cf11 \strokec11 // status can only be either 'backlog' | 'in-progress' | 'complete'\cf0 \cb1 \strokec4 \
+\cb3     \cb1 \
+\cb3     \cf2 \strokec2 if\cf0 \strokec4  (\cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'backlog'\cf0 \strokec4  && \cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'in-progress'\cf0 \strokec4  && \cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'complete'\cf0 \strokec4 ) \{\cb1 \
+\cb3       \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 400\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\{\cb1 \
+\cb3         \cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Invalid status provided.'\cf0 \strokec4 ,\cb1 \
+\cb3         \cf6 \strokec6 'long_message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Status can only be one of the following: [backlog | in-progress | complete].'\cf0 \strokec4 ,\cb1 \
+\cb3       \});\cb1 \
+\cb3     \}\cb1 \
+\cb3     \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 clients\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients where status = ?'\cf0 \strokec4 ).\cf9 \strokec9 all\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4 );\cb1 \
+\cb3     \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 clients\cf0 \strokec4 );\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 statement\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients'\cf0 \strokec4 );\cb1 \
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 clients\cf0 \strokec4  = \cf5 \strokec5 statement\cf0 \strokec4 .\cf9 \strokec9 all\cf0 \strokec4 ();\cb1 \
+\cb3   \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 clients\cf0 \strokec4 );\cb1 \
+\cb3 \});\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 /**\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Get a client based on the id provided.\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * GET /api/v1/clients/\{client_id\} - get client by id\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  */\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 get\cf0 \strokec4 (\cf6 \strokec6 '/api/v1/clients/:id'\cf0 \strokec4 , (\cf5 \strokec5 req\cf0 \strokec4 , \cf5 \strokec5 res\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 id\cf0 \strokec4  = \cf9 \strokec9 parseInt\cf0 \strokec4 (\cf5 \strokec5 req\cf0 \strokec4 .\cf5 \strokec5 params\cf0 \strokec4 .\cf5 \strokec5 id\cf0 \strokec4  , \cf10 \strokec10 10\cf0 \strokec4 );\cb1 \
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \{ \cf8 \strokec8 valid\cf0 \strokec4 , \cf8 \strokec8 messageObj\cf0 \strokec4  \} = \cf9 \strokec9 validateId\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4  (!\cf5 \strokec5 valid\cf0 \strokec4 ) \{\cb1 \
+\cb3     \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 400\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 messageObj\cf0 \strokec4 );\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients where id = ?'\cf0 \strokec4 ).\cf9 \strokec9 get\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 ));\cb1 \
+\cb3 \});\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb3 \strokec11 /**\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Update client information based on the parameters provided.\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * When status is provided, the client status will be changed\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * When priority is provided, the client priority will be changed with the rest of the clients accordingly\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Note that priority = 1 means it has the highest priority (should be on top of the swimlane).\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * No client on the same status should not have the same priority.\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * This API should return list of clients on success\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * PUT /api/v1/clients/\{client_id\} - change the status of a client\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *    Data:\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *      status (optional): 'backlog' | 'in-progress' | 'complete',\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *      priority (optional): integer,\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  */\cf0 \cb1 \strokec4 \
+\
+\cf11 \cb3 \strokec11 /** \cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * setup Insomnia to accept JSON, \cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * \{"priority": 10000\}\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * and in header: \cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  * Content-Type: application/json\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11  *\cf0 \cb1 \strokec4 \
+\cf11 \cb3 \strokec11 */\cf0 \cb1 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 put\cf0 \strokec4 (\cf6 \strokec6 '/api/v1/clients/:id'\cf0 \strokec4 , (\cf5 \strokec5 req\cf0 \strokec4 , \cf5 \strokec5 res\cf0 \strokec4 ) \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 id\cf0 \strokec4  = \cf9 \strokec9 parseInt\cf0 \strokec4 (\cf5 \strokec5 req\cf0 \strokec4 .\cf5 \strokec5 params\cf0 \strokec4 .\cf5 \strokec5 id\cf0 \strokec4  , \cf10 \strokec10 10\cf0 \strokec4 );\cb1 \
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \{ \cf8 \strokec8 valid\cf0 \strokec4 , \cf8 \strokec8 messageObj\cf0 \strokec4  \} = \cf9 \strokec9 validateId\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4  (!\cf5 \strokec5 valid\cf0 \strokec4 ) \{\cb1 \
+\cb3     \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 400\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 messageObj\cf0 \strokec4 );\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf11 \strokec11 // console.log(req.body)\cf0 \cb1 \strokec4 \
+\cb3   \cf7 \strokec7 let\cf0 \strokec4  \{ \cf5 \strokec5 status\cf0 \strokec4 , \cf5 \strokec5 priority\cf0 \strokec4  \} = \cf5 \strokec5 req\cf0 \strokec4 .\cf5 \strokec5 body\cf0 \strokec4 ;\cb1 \
+\
+\cb3   \cf11 \strokec11 // console.log(status, priority)\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // let clients = db.prepare('select * from clients').all();\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // const client = clients.find(client => client.id === id);\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 /* ---------- Update code below ----------*/\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // \cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // scenarios:\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // status && priority: \cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // new status === client.status ---> no change in lane\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // new status !== client.status ---> change in lane\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // in client (old) lane, update priority >= client.prioriy by deducting 1, (ie move upwards, pull client out)\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // in new lane, update priority >= new prioity by adding 1 (move down to leave a spot to insert client)\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // lastly update the client to new status and priority\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // priority===null:\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // add client to end of lane. \cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // update priority to total number of client in new status lane.\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // status = null:\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // client stays in same lane.\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // update status to client current lane.\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // edge cases: \cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // priority > total number of clients in the lane, add client to end of lane\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // priority updated to total number of clients + 1\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // priority <= 0,  add client to front of lane\cf0 \cb1 \strokec4 \
+\cb3   \cf11 \strokec11 // priority updated to 1\cf0 \cb1 \strokec4 \
+\
+\cb3   \cf11 \strokec11 // status === null  && priority===null, return client\cf0 \cb1 \strokec4 \
+\
+\
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 client\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients where id = ?'\cf0 \strokec4 ).\cf9 \strokec9 get\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 )\cb1 \
+\
+\cb3   \cf2 \strokec2 if\cf0 \strokec4 (!\cf5 \strokec5 status\cf0 \strokec4  && !\cf5 \strokec5 priority\cf0 \strokec4 )\cb1 \
+\cb3     \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 client\cf0 \strokec4 );\cb1 \
+\cb3   \cb1 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4 )\{\cb1 \
+\cb3     \cf2 \strokec2 if\cf0 \strokec4  (\cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'backlog'\cf0 \strokec4  && \cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'in-progress'\cf0 \strokec4  && \cf5 \strokec5 status\cf0 \strokec4  !== \cf6 \strokec6 'complete'\cf0 \strokec4 ) \{\cb1 \
+\cb3       \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 400\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\{\cb1 \
+\cb3         \cf6 \strokec6 'message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Invalid status provided.'\cf0 \strokec4 ,\cb1 \
+\cb3         \cf6 \strokec6 'long_message'\cf5 \strokec5 :\cf0 \strokec4  \cf6 \strokec6 'Status can only be one of the following: [backlog | in-progress | complete].'\cf0 \strokec4 ,\cb1 \
+\cb3       \});\cb1 \
+\cb3     \}\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf2 \strokec2 else\cf0 \cb1 \strokec4 \
+\cb3   \{ \cf11 \strokec11 // !status\cf0 \cb1 \strokec4 \
+\cb3       \cf5 \strokec5 status\cf0 \strokec4  = \cf5 \strokec5 client\cf0 \strokec4 .\cf5 \strokec5 status\cf0 \cb1 \strokec4 \
+\cb3   \}\cb1 \
+\
+\cb3   \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 newLaneClientsCount\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select count(id) as count from clients where status = ?'\cf0 \strokec4 ).\cf9 \strokec9 all\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4 )[\cf10 \strokec10 0\cf0 \strokec4 ].\cf5 \strokec5 count\cf0 \cb1 \strokec4 \
+\cb3   \cf2 \strokec2 if\cf0 \strokec4 (!\cf5 \strokec5 priority\cf0 \strokec4 )\{\cb1 \
+\cb3     \cf2 \strokec2 if\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4  !== \cf5 \strokec5 client\cf0 \strokec4 .\cf5 \strokec5 status\cf0 \strokec4 )\cb1 \
+\cb3       \cf5 \strokec5 priority\cf0 \strokec4  = \cf5 \strokec5 newLaneClientsCount\cf0 \strokec4  + \cf10 \strokec10 1\cf0 \cb1 \strokec4 \
+\cb3     \cf2 \strokec2 else\cf0 \cb1 \strokec4 \
+\cb3       \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 client\cf0 \strokec4 );\cb1 \
+\cb3   \}\cb1 \
+\cb3   \cf2 \strokec2 else\cf0 \strokec4  \cb1 \
+\cb3   \{\cb1 \
+\cb3       \cf2 \strokec2 if\cf0 \strokec4 (\cf5 \strokec5 priority\cf0 \strokec4  <= \cf10 \strokec10 0\cf0 \strokec4 )\cb1 \
+\cb3         \cf5 \strokec5 priority\cf0 \strokec4  = \cf10 \strokec10 1\cf0 \cb1 \strokec4 \
+\
+\cb3       \cf2 \strokec2 else\cf0 \strokec4  \cf2 \strokec2 if\cf0 \strokec4 (\cf5 \strokec5 priority\cf0 \strokec4  > \cf5 \strokec5 newLaneClientsCount\cf0 \strokec4 )\{\cb1 \
+\cb3         \cf2 \strokec2 if\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4  === \cf5 \strokec5 client\cf0 \strokec4 .\cf5 \strokec5 status\cf0 \strokec4 ) \cf11 \strokec11 // already in lane, move to last\cf0 \cb1 \strokec4 \
+\cb3           \cf5 \strokec5 priority\cf0 \strokec4  = \cf5 \strokec5 newLaneClientsCount\cf0 \cb1 \strokec4 \
+\cb3         \cf2 \strokec2 else\cf0 \cb1 \strokec4 \
+\cb3           \cf5 \strokec5 priority\cf0 \strokec4  = \cf5 \strokec5 newLaneClientsCount\cf0 \strokec4 +\cf10 \strokec10 1\cf0 \cb1 \strokec4 \
+\cb3       \}  \cb1 \
+\cb3   \}\cb1 \
+\cb3   \cb1 \
+\
+\
+\
+\cb3     \cf11 \strokec11 // update the priority of the old lane\cf0 \cb1 \strokec4 \
+\cb3     \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 oldLaneClients\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select id, priority from clients where status = ? and priority >= ?'\cf0 \strokec4 ).\cf9 \strokec9 all\cf0 \strokec4 (\cf5 \strokec5 client\cf0 \strokec4 .\cf5 \strokec5 status\cf0 \strokec4 , \cf5 \strokec5 client\cf0 \strokec4 .\cf5 \strokec5 priority\cf0 \strokec4 );\cb1 \
+\cb3     \cf2 \strokec2 for\cf0 \strokec4 (\cf7 \strokec7 let\cf0 \strokec4  \cf5 \strokec5 olc\cf0 \strokec4  \cf7 \strokec7 of\cf0 \strokec4  \cf5 \strokec5 oldLaneClients\cf0 \strokec4 )\{\cb1 \
+\cb3       \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 update\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'UPDATE clients SET priority = ? WHERE id = ?'\cf0 \strokec4 );\cb1 \
+\cb3       \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 result\cf0 \strokec4  = \cf5 \strokec5 update\cf0 \strokec4 .\cf9 \strokec9 run\cf0 \strokec4 (\cf5 \strokec5 olc\cf0 \strokec4 .\cf5 \strokec5 priority\cf0 \strokec4 -\cf10 \strokec10 1\cf0 \strokec4 , \cf5 \strokec5 olc\cf0 \strokec4 .\cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3     \} \cb1 \
+\
+\cb3     \cf11 \strokec11 // update the priority of the new lane\cf0 \cb1 \strokec4 \
+\cb3     \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 newLaneClients\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select id, priority from clients where status = ? and priority >= ?'\cf0 \strokec4 ).\cf9 \strokec9 all\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4 , \cf5 \strokec5 priority\cf0 \strokec4 );\cb1 \
+\cb3     \cf2 \strokec2 for\cf0 \strokec4 (\cf7 \strokec7 let\cf0 \strokec4  \cf5 \strokec5 nlc\cf0 \strokec4  \cf7 \strokec7 of\cf0 \strokec4  \cf5 \strokec5 newLaneClients\cf0 \strokec4 )\{\cb1 \
+\cb3       \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 update\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'UPDATE clients SET priority = ? WHERE id = ?'\cf0 \strokec4 );\cb1 \
+\cb3       \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 result\cf0 \strokec4  = \cf5 \strokec5 update\cf0 \strokec4 .\cf9 \strokec9 run\cf0 \strokec4 (\cf5 \strokec5 nlc\cf0 \strokec4 .\cf5 \strokec5 priority\cf0 \strokec4 +\cf10 \strokec10 1\cf0 \strokec4 , \cf5 \strokec5 nlc\cf0 \strokec4 .\cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3     \}\cb1 \
+\
+\cb3   \cb1 \
+\cb3     \cf11 \strokec11 // update the status and priority of the client\cf0 \cb1 \strokec4 \
+\cb3     \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 update\cf0 \strokec4  = \cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'UPDATE clients SET status = ?, priority = ? WHERE id = ?'\cf0 \strokec4 );\cb1 \
+\cb3     \cf7 \strokec7 const\cf0 \strokec4  \cf8 \strokec8 result\cf0 \strokec4  = \cf5 \strokec5 update\cf0 \strokec4 .\cf9 \strokec9 run\cf0 \strokec4 (\cf5 \strokec5 status\cf0 \strokec4 , \cf5 \strokec5 priority\cf0 \strokec4 , \cf5 \strokec5 id\cf0 \strokec4 );\cb1 \
+\cb3   \cb1 \
+\
+\
+\
+\cb3   \cf2 \strokec2 return\cf0 \strokec4  \cf5 \strokec5 res\cf0 \strokec4 .\cf9 \strokec9 status\cf0 \strokec4 (\cf10 \strokec10 200\cf0 \strokec4 ).\cf9 \strokec9 send\cf0 \strokec4 (\cf5 \strokec5 db\cf0 \strokec4 .\cf9 \strokec9 prepare\cf0 \strokec4 (\cf6 \strokec6 'select * from clients where id = ?'\cf0 \strokec4 ).\cf9 \strokec9 get\cf0 \strokec4 (\cf5 \strokec5 id\cf0 \strokec4 ));\cb1 \
+\cb3 \});\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 app\cf0 \strokec4 .\cf9 \strokec9 listen\cf0 \strokec4 (\cf5 \strokec5 port\cf0 \strokec4 , () \cf7 \strokec7 =>\cf0 \strokec4  \{\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf0 \cb3   \cf5 \strokec5 console\cf0 \strokec4 .\cf9 \strokec9 log\cf0 \strokec4 (\cf6 \strokec6 `Server listening at http://localhost:\cf7 \strokec7 $\{\cf5 \strokec5 port\cf7 \strokec7 \}\cf6 \strokec6 `\cf0 \strokec4 );\cb1 \
+\cb3 \});\cb1 \
+}
